@@ -1,3 +1,11 @@
+#' Subprocess for vectorizing the load of individual specs for a table
+#'
+#' @param table A table
+#'
+#' @return A table of column specs
+#' @export
+#'
+#' @examples
 loadSpec <- function(table){
   col_spec <- common_spec %>%
     rbind(

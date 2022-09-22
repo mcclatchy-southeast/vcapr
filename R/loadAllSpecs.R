@@ -1,3 +1,11 @@
+#' Use a data dictionary to load specs
+#'
+#' @param civil_data_dict A dataframe describing the data
+#'
+#' @return
+#' @export
+#'
+#' @examples
 load_all_specs <- function(civil_data_dict){
   start_time <- proc.time()[[3]]
 
