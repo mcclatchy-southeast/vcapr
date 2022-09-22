@@ -6,7 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of vcapr is to …
+Tools to efficiently import and parse data extracts from the N.C.
+Administrative Office of the Courts VCAP system for civil court data.
 
 ## Installation
 
