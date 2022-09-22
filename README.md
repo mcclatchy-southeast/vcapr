@@ -25,6 +25,20 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 #load the package
 library(vcapr)
 
+#examine the data dicionary
+head(civil_data_dict)
+#> # A tibble: 6 × 10
+#>   table_type table_code table…¹ col_n…² type  null_…³ descr…⁴ start   end length
+#>   <chr>      <chr>        <int> <chr>   <chr> <chr>   <chr>   <int> <int>  <int>
+#> 1 case       NOBC             0 cntyno  <NA>  NOT NU… County…     1     3      3
+#> 2 case       NOBC             0 v2      <NA>  NOT NU… unknown     4     6      3
+#> 3 case       NOBC             0 rectype <NA>  NOT NU… Record…     7     8      2
+#> 4 case       NOBC             0 caseno  <NA>  NOT NU… Case F…     9    19     11
+#> 5 case       NOBC             0 f1      <NA>  NULL    Update…    20    24      5
+#> 6 case       NOBC            28 cnty_n… CHAR… NOT NU… This f…    25    27      3
+#> # … with abbreviated variable names ¹​table_id, ²​col_names, ³​null_option,
+#> #   ⁴​description
+
 #load all specifications per a specified data dictionary
 all_specs <- loadAllSpecs(civil_data_dict)
 #> ...TABLE LIST CREATED
@@ -88,7 +102,7 @@ all_specs <- loadAllSpecs(civil_data_dict)
 #> ...SPEC FOR NOBS42 CREATED
 #> ...SPEC FOR NOBS10 CREATED
 #> ...ALL SPECS LOADED
-#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 3.107 seconds
+#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 3.37 seconds
 
 #load relevant tables from civil data
 issue_type <- loadCivilTable('../../aoc/2022/sep/NOBC23', all_specs)
