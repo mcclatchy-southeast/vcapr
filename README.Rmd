@@ -29,7 +29,21 @@ You can install the development version of vcapr from [GitHub](https://github.co
 devtools::install_github("mcclatchy-southeast/vcapr")
 ```
 
-## Example
+## Usage
+
+```{r}
+#load the package
+library(vcapr)
+
+#load all specifications per a specified data dictionary
+all_specs <- loadAllSpecs(civil_data_dict)
+
+#load relevant tables from civil data
+issue_type <- loadCivilTable('../../aoc/2022/sep/NOBC23', all_specs)
+party_names <- loadCivilTable('../../aoc/2022/sep/NOBC48', all_specs)
+```
+
+<!--## Example
 
 This is a basic example which shows you how to solve a common problem:
 
@@ -52,4 +66,4 @@ You can also embed plots, for example:
 plot(pressure)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.-->
