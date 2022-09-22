@@ -2,13 +2,15 @@
 #'
 #' @param civil_data_dict A dataframe describing the data
 #'
-#' @return
+#' @return A list of data layouts named for each table
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @export
 #'
 #' @examples
-load_all_specs <- function(civil_data_dict){
+#' #load all specifications per a specified data dictionary
+#' all_specs <- loadAllSpecs(civil_data_dict)
+loadAllSpecs <- function(civil_data_dict){
   start_time <- proc.time()[[3]]
 
   #create a vector of unique table code/ids using the civil data dictionary
