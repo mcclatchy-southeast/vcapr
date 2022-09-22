@@ -1,7 +1,7 @@
 #' Use table specs to load in a civil data table
 #'
-#' @param table_path
-#' @param all_specs
+#' @param table_path Description
+#' @param all_specs Description
 #'
 #' @return
 #' @export

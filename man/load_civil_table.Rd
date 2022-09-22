@@ -7,7 +7,9 @@
 load_civil_table(table_path, all_specs)
 }
 \arguments{
-\item{all_specs}{}
+\item{table_path}{Description}
+
+\item{all_specs}{Description}
 }
 \description{
 Use table specs to load in a civil data table

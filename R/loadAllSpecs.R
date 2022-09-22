@@ -29,7 +29,19 @@ load_all_specs <- function(civil_data_dict){
   cat('...COMMON SPECS CREATED\n')
 
   #execute our loader function across the table list
-  all_specs <- lapply(tables, vcapr::loadSpec)
+  all_specs <- lapply(tables, function(table){
+    col_spec <- common_spec %>%
+      rbind(
+        civil_data_dict %>%
+          dplyr::filter(.data$table_code == substr(table, 0, 4) & .data$table_id  == substr(table, 5, 6)) %>%
+          dplyr::select(.data$start, .data$end, .data$col_names)
+      )
+
+    cat('...SPEC FOR', table, 'CREATED\n')
+
+    return(col_spec)
+
+  })
 
   cat('...ALL SPECS LOADED\n')
 
