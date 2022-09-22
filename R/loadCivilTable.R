@@ -9,9 +9,9 @@
 #' @examples
 load_civil_table <- function(table_path, all_specs){
   table_name <- basename(table_path)
-  positions <- fwf_positions(start = all_specs[[table_name]]$start,
+  positions <- vroom::fwf_positions(start = all_specs[[table_name]]$start,
                              end = all_specs[[table_name]]$end,
                              col_names = all_specs[[table_name]]$col_names)
-  df <- vroom_fwf(table_path, positions )
+  df <- vroom::vroom_fwf(table_path, positions )
   return(df)
 }

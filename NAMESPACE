@@ -3,3 +3,5 @@
 export(loadSpec)
 export(load_all_specs)
 export(load_civil_table)
+importFrom(dplyr,"%>%")
+importFrom(rlang,.data)

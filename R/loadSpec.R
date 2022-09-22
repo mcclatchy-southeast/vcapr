@@ -3,6 +3,8 @@
 #' @param table A table
 #'
 #' @return A table of column specs
+#' @importFrom dplyr %>%
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -10,8 +12,8 @@ loadSpec <- function(table){
   col_spec <- common_spec %>%
     rbind(
       civil_data_dict %>%
-        filter(table_code == substr(table, 0, 4) & table_id  == substr(table, 5, 6)) %>%
-        select(start, end, col_names)
+        dplyr::filter(.data$table_code == substr(table, 0, 4) & .data$table_id  == substr(table, 5, 6)) %>%
+        dplyr::select(.data$start, .data$end, .data$col_names)
     )
 
   cat('...SPEC FOR', table, 'CREATED\n')
