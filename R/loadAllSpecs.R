@@ -15,7 +15,7 @@ loadAllSpecs <- function(civil_data_dict){
 
   #create a vector of unique table code/ids using the civil data dictionary
   tables <- civil_data_dict %>%
-    dplyr::filter(.data$table_type != 'common') %>%
+    dplyr::filter(.data$table_id != '00') %>%
     dplyr::distinct(.data$table_code, .data$table_id) %>%
     dplyr::mutate(table_code_id = paste0(.data$table_code, .data$table_id) ) %>%
     dplyr::pull(.data$table_code_id)
@@ -25,7 +25,7 @@ loadAllSpecs <- function(civil_data_dict){
   #filter and load into a zero indexed table with the specific specs
   #of the fwf_cols() function, which we can define directly on read
   common_spec <- civil_data_dict %>%
-    dplyr::filter(.data$table_id == '00' | .data$table_id == 0 | .data$table_id == '0') %>%
+    dplyr::filter(.data$table_id == '00') %>%
     dplyr::select(.data$start, .data$end, .data$col_names)
 
   cat('...COMMON SPECS CREATED\n')

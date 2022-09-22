@@ -5,7 +5,7 @@
 \alias{civil_data_dict}
 \title{AOC VCAP data layout}
 \format{
-A data frame with 851 rows and 10 variables:
+A data frame with 852 rows and 10 variables:
 \describe{
 \item{table_type}{description}
 \item{table_code}{description}

@@ -2,7 +2,7 @@
 #'
 #' A dataset containing the layout of tables in the AOC civil court extract
 #'
-#' @format A data frame with 851 rows and 10 variables:
+#' @format A data frame with 852 rows and 10 variables:
 #' \describe{
 #'   \item{table_type}{description}
 #'   \item{table_code}{description}
