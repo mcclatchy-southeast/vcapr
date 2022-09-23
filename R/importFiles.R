@@ -23,19 +23,19 @@
 importFiles <- function(record_category = 'c', data_dict, source_dir){
   #start the timer for reporting
   start_time <- proc.time()[[3]]
-  cat('...starting file import at', format(Sys.time(), '%H:%M:%S'), '\n')
+  cat('...STARTING FILE IMPORT AT', format(Sys.time(), '%H:%M:%S'), '\n')
 
   #translate the record category to the file name code
   cat_code <- vcapr::getCatCode(record_category)
 
   #check for valid category code
   if(cat_code == 'INVALID'){
-    cat('x  ERROR: Invalid category code. Did you mean c, a or s?')
+    cat('x  ERROR: INVALID CATEGORY CODE. DID YOU MEAN c, a OR s?')
     stop()
   }
 
   #load the fill directory of files
-  full_dir <- list.files('./vcap')
+  full_dir <- list.files(source_dir)
 
   #filter the full directory for the category of records specified
   case_files <- sapply(full_dir[grepl(paste0('^', cat_code), full_dir)],
@@ -57,8 +57,8 @@ importFiles <- function(record_category = 'c', data_dict, source_dir){
                     col_types = c(.default = "c"),
                     progress = TRUE)
 
-  cat('...Import complete at', format(Sys.time(), '%H:%M:%S'),
-      '- elapsed time:', proc.time()[[3]] - start_time, 'seconds\n')
+  cat('...IMPORT COMPLETE AT', format(Sys.time(), '%H:%M:%S'),
+      '- ELAPSED TIME:', proc.time()[[3]] - start_time, 'SECONDS\n')
 
   return(case)
 }
