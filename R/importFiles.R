@@ -34,31 +34,37 @@ importFiles <- function(record_category = 'c', data_dict, source_dir){
     stop()
   }
 
-  #load the fill directory of files
-  full_dir <- list.files(source_dir)
+  #check if the directory exists
+  if(dir.exists(source_dir)){
+    #load the fill directory of files
+    full_dir <- list.files(source_dir)
 
-  #filter the full directory for the category of records specified
-  case_files <- sapply(full_dir[grepl(paste0('^', cat_code), full_dir)],
-                       function(filename) paste0(source_dir, filename))
+    #filter the full directory for the category of records specified
+    case_files <- sapply(full_dir[grepl(paste0('^', cat_code), full_dir)],
+                         function(filename) paste0(source_dir, filename))
 
-  #load the common layout from the data dictionary and add generic line row
-  common_layout <- vcapr::getCommonLayout(cat_code, data_dict, 1)
+    #load the common layout from the data dictionary and add generic line row
+    common_layout <- vcapr::getCommonLayout(cat_code, data_dict, 1)
 
-  #translate that common layout into a fwf_position object for vroom
-  positions <- vroom::fwf_positions(start = common_layout$start,
-                             end = common_layout$end,
-                             col_names = common_layout$col_names)
+    #translate that common layout into a fwf_position object for vroom
+    positions <- vroom::fwf_positions(start = common_layout$start,
+                                      end = common_layout$end,
+                                      col_names = common_layout$col_names)
 
-  #load all case file lines with vroom
-  case <- vroom::vroom_fwf(case_files,
-                    positions,
-                    na = character(),
-                    trim_ws = FALSE,
-                    col_types = c(.default = "c"),
-                    progress = TRUE)
+    #load all case file lines with vroom
+    case <- vroom::vroom_fwf(case_files,
+                             positions,
+                             na = character(),
+                             trim_ws = FALSE,
+                             col_types = c(.default = "c"),
+                             progress = TRUE)
 
-  cat('...IMPORT COMPLETE AT', format(Sys.time(), '%H:%M:%S'),
-      '- ELAPSED TIME:', proc.time()[[3]] - start_time, 'SECONDS\n')
+    cat('...IMPORT COMPLETE AT', format(Sys.time(), '%H:%M:%S'),
+        '- ELAPSED TIME:', proc.time()[[3]] - start_time, 'SECONDS\n')
 
-  return(case)
+    return(case)
+  }
+  else{
+    cat('x  ERROR: DIRECTORY DOES NOT EXIST.')
+  }
 }

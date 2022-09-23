@@ -35,6 +35,9 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 #load the package
 library(vcapr)
 
+#load all case record data from the civil extract into one dataframe
+all_tables <- importFiles('c', civil_data_dict, 'path/to/raw/vcap/files/')
+
 #examine the data dicionary
 head(civil_data_dict)
 

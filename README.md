@@ -25,6 +25,11 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 #load the package
 library(vcapr)
 
+#load all case record data from the civil extract into one dataframe
+all_tables <- importFiles('c', civil_data_dict, 'path/to/raw/vcap/files/')
+#> ...STARTING FILE IMPORT AT 17:03:01 
+#> x  ERROR: DIRECTORY DOES NOT EXIST.
+
 #examine the data dicionary
 head(civil_data_dict)
 #> # A tibble: 6 × 10
@@ -101,7 +106,7 @@ all_specs <- loadAllSpecs(civil_data_dict)
 #> ...SPEC FOR NOBS42 CREATED
 #> ...SPEC FOR NOBS10 CREATED
 #> ...ALL SPECS LOADED
-#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 2.96 seconds
+#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 3.309 seconds
 
 #load relevant tables from civil data
 issue_type <- loadCivilTable('../../aoc/2022/sep/NOBC23', all_specs)

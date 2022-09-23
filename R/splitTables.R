@@ -13,7 +13,16 @@
 #' @export
 #'
 #' @examples
-#' all_tables <- importFiles('c', civil_data_dict, 'vcap/')
+#' all_tables <- data.frame(
+#'  cntyno = c('000','000','000','000','000','000','000','000','000','000'),
+#'  v2 = c(1:10),
+#'  rectype = c(28, 59, 59,48, 37, 47, 65, 48, 48, 60),
+#'  caseno = c('17CR 000002', '17CR 000002', '17CR 000002', '17CR 000002', '17CR 000002',
+#'  '17CR 000002', '17CR 000002', '17CR 000002', '17CR 000002', '17CR 000002'),
+#'  f1 = c(1:10),
+#'  line = c('test line', 'test line','test line','test line','test line',
+#'  'test line','test line','test line','test line','test line')
+#'  )
 #' splitTables(all_tables)
 splitTables <- function(combined_tables) {
   #start the timer for reporting
