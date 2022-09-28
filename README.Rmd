@@ -36,14 +36,21 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 library(vcapr)
 
 # import, parse and write a single file to a destination directory
-# change this to wherever the raw files are stored on your machine
+#
+# NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
 process_results <- processCivilFile('/vcap/NOBC0001', '/vcap/tables/')
 
-# loop through a series of files
-# change this to wherever the raw files are stored on your machine
+# import, parse and write files from a directory of raw files to a destination
+# directory. only accepts files for the relevant table type (e.g. case)
+# 
+# NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
-# TODO Add a function like this to get a directory
+process_results <- processCivilDirectory('/vcap/raw_files/', 'vcap/2022/tables/')
+
+# loop through a series of files specified by the user
+# NOTE: change this to wherever the raw files are stored on your machine
+# and where you want to the separated files to be saved
 #
 # create a list of filenames
 files <- c('/vcap/NOBC0001',

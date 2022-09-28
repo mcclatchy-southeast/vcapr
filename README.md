@@ -26,16 +26,26 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 library(vcapr)
 
 # import, parse and write a single file to a destination directory
-# change this to wherever the raw files are stored on your machine
+#
+# NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
 process_results <- processCivilFile('/vcap/NOBC0001', '/vcap/tables/')
-#> ...STARTING FILE IMPORT AT 22:00:51 
+#> ...STARTING FILE IMPORT AT 22:51:30 
 #> x  ERROR: FILE DOES NOT EXIST.
 
-# loop through a series of files
-# change this to wherever the raw files are stored on your machine
+# import, parse and write files from a directory of raw files to a destination
+# directory. only accepts files for the relevant table type (e.g. case)
+# 
+# NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
-# TODO Add a function like this to get a directory
+process_results <- processCivilDirectory('/vcap/raw_files/', 'vcap/2022/tables/')
+#> ...STARTING DIRECTORY PROCESS AT 22:51:30 
+#> 
+#> x  ERROR: SOURCE DIRECTORY DOES NOT EXIST OR IS NOT A DIRECTORY (DID YOU FORGET THE SLASH?).
+
+# loop through a series of files specified by the user
+# NOTE: change this to wherever the raw files are stored on your machine
+# and where you want to the separated files to be saved
 #
 # create a list of filenames
 files <- c('/vcap/NOBC0001',
@@ -54,11 +64,11 @@ for(file in files){
     )
   }
 }
-#> ...STARTING FILE IMPORT AT 22:00:51 
+#> ...STARTING FILE IMPORT AT 22:51:30 
 #> x  ERROR: FILE DOES NOT EXIST.
-#> ...STARTING FILE IMPORT AT 22:00:51 
+#> ...STARTING FILE IMPORT AT 22:51:30 
 #> x  ERROR: FILE DOES NOT EXIST.
-#> ...STARTING FILE IMPORT AT 22:00:51 
+#> ...STARTING FILE IMPORT AT 22:51:30 
 #> x  ERROR: FILE DOES NOT EXIST.
 ```
 
@@ -122,7 +132,7 @@ library(vcapr)
 
 # import, parse and write a single file
 processCivilFile('/vcap/NOBC0001', 'vcap/tables/')
-#> ...STARTING FILE IMPORT AT 22:00:51 
+#> ...STARTING FILE IMPORT AT 22:51:30 
 #> x  ERROR: FILE DOES NOT EXIST.
 #> # A tibble: 0 × 4
 #> # … with 4 variables: file_name <chr>, table_name <chr>, rows <dbl>,
@@ -130,7 +140,7 @@ processCivilFile('/vcap/NOBC0001', 'vcap/tables/')
 
 #load all case record data from the civil extract into one dataframe
 all_tables <- importFiles('c', civil_data_dict, 'path/to/raw/vcap/files/')
-#> ...STARTING FILE IMPORT AT 22:00:51 
+#> ...STARTING FILE IMPORT AT 22:51:30 
 #> x  ERROR: DIRECTORY DOES NOT EXIST.
 
 #examine the data dicionary
@@ -209,7 +219,7 @@ all_specs <- loadAllSpecs(civil_data_dict)
 #> ...SPEC FOR NOBS42 CREATED
 #> ...SPEC FOR NOBS10 CREATED
 #> ...ALL SPECS LOADED
-#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 2.298 seconds
+#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 2.326 seconds
 
 #load relevant tables from civil data
 issue_type <- loadCivilTable('../../aoc/2022/sep/NOBC23', all_specs)
