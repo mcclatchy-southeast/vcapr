@@ -46,7 +46,7 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 
 ## Usage
 
-```{r}
+```r
 # load the package
 library(vcapr)
 
@@ -127,7 +127,7 @@ h/t to [Michael Toren](https://twitter.com/michael_toren) for the assist with th
 
 In the process of moving away from these after refactoring. So consider everything below deprecated.
 
-```{r}
+```r
 # load the package
 library(vcapr)
 
