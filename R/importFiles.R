@@ -36,11 +36,11 @@ importFiles <- function(record_category = 'c', data_dict, source_dir){
 
   #check if the directory exists
   if(dir.exists(source_dir)){
-    #load the fill directory of files
+    #load the full directory of files
     full_dir <- list.files(source_dir)
 
     #filter the full directory for the category of records specified
-    case_files <- sapply(full_dir[grepl(paste0('^', cat_code), full_dir)],
+    files <- sapply(full_dir[grepl(paste0('^', cat_code), full_dir)],
                          function(filename) paste0(source_dir, filename))
 
     #load the common layout from the data dictionary and add generic line row
@@ -51,18 +51,19 @@ importFiles <- function(record_category = 'c', data_dict, source_dir){
                                       end = common_layout$end,
                                       col_names = common_layout$col_names)
 
-    #load all case file lines with vroom
-    case <- vroom::vroom_fwf(case_files,
+    #load all file lines with vroom
+    full_table <- vroom::vroom_fwf(files,
                              positions,
                              na = character(),
                              trim_ws = FALSE,
+                             altrep = TRUE,
                              col_types = c(.default = "c"),
                              progress = TRUE)
 
     cat('...IMPORT COMPLETE AT', format(Sys.time(), '%H:%M:%S'),
         '- ELAPSED TIME:', proc.time()[[3]] - start_time, 'SECONDS\n')
 
-    return(case)
+    return(full_table)
   }
   else{
     cat('x  ERROR: DIRECTORY DOES NOT EXIST.')
