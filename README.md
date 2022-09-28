@@ -15,24 +15,30 @@
 An R package to efficiently import and parse data extracts from the N.C.
 Administrative Office of the Courts VCAP system for civil court data.
 
-Use vcapr to: \* load in raw data from the AOC civil extract \* parse
-the data line by line according to the data layout for each table \*
-write parse tables to CSV files for easy loading
+Use `vcapr` to: \* load in raw data from the AOC civil extract (either
+case, abstract or support record types) \* parse the data line by line
+according to the data layout for each table \* write parse tables to CSV
+files for easy loading
 
 In testing, the entire processing of loading, parsing and writing the
 tables took less than 30 minutes.
 
 ## Installation
 
-You can install the development version of vcapr from
+You can install the development version of `vcapr` from
 [GitHub](https://github.com/) with:
 
 ``` r
+# if you haven't installed devtools, uncomment the line below
 # install.packages("devtools")
+
+# install the package from GitHub
 devtools::install_github("mcclatchy-southeast/vcapr")
 ```
 
 ## Usage
+
+After installation, you can load the library like any other package.
 
 ``` r
 # load the package
@@ -41,19 +47,41 @@ library(vcapr)
 # examine the data dictionary
 head(civil_data_dict)
 
+# examine the documentation
+?processCivilFile
+```
+
+You can process a single file. By default, `vcapr` will use the
+preloaded data layout and will process case records. If you want to
+change this, you can pass in another record type. See the documentation
+for details
+
+``` r
 # import, parse and write a single file to a destination directory
 #
 # NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
 process_results <- processCivilFile('/vcap/NOBC0001', '/vcap/tables/')
+```
 
+Or (recommended) you can point `vcapr` to the directory containing the
+files you want to process. By default, `vcapr` will use the preloaded
+data layout and will process case records. If you want to change this,
+you can pass in another record type. See the documentation for details
+
+``` r
 # import, parse and write files from a directory of raw files to a destination
 # directory. only accepts files for the relevant table type (e.g. case)
 # 
 # NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
 process_results <- processCivilDirectory('/vcap/raw_files/', 'vcap/2022/tables/')
+```
 
+In case you want to pass in several specific files, `vcapr` is designed
+to loop efficiently.
+
+``` r
 # loop through a series of files specified by the user
 # NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
