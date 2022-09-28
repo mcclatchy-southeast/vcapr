@@ -1,13 +1,26 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# vcapr
+    ____    ____  ______     ___      .______   .______      
+    \   \  /   / /      |   /   \     |   _  \  |   _  \     
+     \   \/   / |  ,----'  /  ^  \    |  |_)  | |  |_)  |    
+      \      /  |  |      /  /_\  \   |   ___/  |      /     
+       \    /   |  `----./  _____  \  |  |      |  |\  \----.
+        \__/     \______/__/     \__\ | _|      | _| `._____|
+                                                             
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 An R package to efficiently import and parse data extracts from the N.C.
 Administrative Office of the Courts VCAP system for civil court data.
+
+Use vcapr to: \* load in raw data from the AOC civil extract \* parse
+the data line by line according to the data layout for each table \*
+write parse tables to CSV files for easy loading
+
+In testing, the entire processing of loading, parsing and writing the
+tables took less than 30 minutes.
 
 ## Installation
 
@@ -25,12 +38,26 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 # load the package
 library(vcapr)
 
+# examine the data dictionary
+head(civil_data_dict)
+#> # A tibble: 6 × 10
+#>   table_type table_code table…¹ col_n…² type  null_…³ descr…⁴ start   end length
+#>   <chr>      <chr>      <chr>   <chr>   <chr> <chr>   <chr>   <int> <int>  <int>
+#> 1 case       NOBC       00      cntyno  <NA>  NOT NU… County…     1     3      3
+#> 2 case       NOBC       00      v2      <NA>  NOT NU… unknown     4     6      3
+#> 3 case       NOBC       00      rectype <NA>  NOT NU… Record…     7     8      2
+#> 4 case       NOBC       00      caseno  <NA>  NOT NU… Case F…     9    19     11
+#> 5 case       NOBC       00      f1      <NA>  NULL    Update…    20    24      5
+#> 6 case       NOBC       28      cnty_n… CHAR… NOT NU… This f…    25    27      3
+#> # … with abbreviated variable names ¹​table_id, ²​col_names, ³​null_option,
+#> #   ⁴​description
+
 # import, parse and write a single file to a destination directory
 #
 # NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
 process_results <- processCivilFile('/vcap/NOBC0001', '/vcap/tables/')
-#> ...STARTING FILE IMPORT AT 22:51:30 
+#> ...STARTING FILE IMPORT AT 23:03:39 
 #> x  ERROR: FILE DOES NOT EXIST.
 
 # import, parse and write files from a directory of raw files to a destination
@@ -39,7 +66,7 @@ process_results <- processCivilFile('/vcap/NOBC0001', '/vcap/tables/')
 # NOTE: change this to wherever the raw files are stored on your machine
 # and where you want to the separated files to be saved
 process_results <- processCivilDirectory('/vcap/raw_files/', 'vcap/2022/tables/')
-#> ...STARTING DIRECTORY PROCESS AT 22:51:30 
+#> ...STARTING DIRECTORY PROCESS AT 23:03:39 
 #> 
 #> x  ERROR: SOURCE DIRECTORY DOES NOT EXIST OR IS NOT A DIRECTORY (DID YOU FORGET THE SLASH?).
 
@@ -64,11 +91,11 @@ for(file in files){
     )
   }
 }
-#> ...STARTING FILE IMPORT AT 22:51:30 
+#> ...STARTING FILE IMPORT AT 23:03:39 
 #> x  ERROR: FILE DOES NOT EXIST.
-#> ...STARTING FILE IMPORT AT 22:51:30 
+#> ...STARTING FILE IMPORT AT 23:03:39 
 #> x  ERROR: FILE DOES NOT EXIST.
-#> ...STARTING FILE IMPORT AT 22:51:30 
+#> ...STARTING FILE IMPORT AT 23:03:39 
 #> x  ERROR: FILE DOES NOT EXIST.
 ```
 
@@ -91,7 +118,11 @@ described [in the provided data
 dictionary](https://www.documentcloud.org/documents/23070366-nc-aoc-vcap-extract-file-layout).
 
 This document, provided by the AOC, was manually translated into a CSV
-preloaded into the package.
+preloaded into the package for ease of use.
+
+*NOTE: It’s not advisable to load all the data into memory at once, so
+we’ve refactored vcapr to loop through a file or directory and
+reconstruct the tables line by line.*
 
 ### Preprocessing
 
@@ -132,7 +163,7 @@ library(vcapr)
 
 # import, parse and write a single file
 processCivilFile('/vcap/NOBC0001', 'vcap/tables/')
-#> ...STARTING FILE IMPORT AT 22:51:30 
+#> ...STARTING FILE IMPORT AT 23:03:39 
 #> x  ERROR: FILE DOES NOT EXIST.
 #> # A tibble: 0 × 4
 #> # … with 4 variables: file_name <chr>, table_name <chr>, rows <dbl>,
@@ -140,22 +171,8 @@ processCivilFile('/vcap/NOBC0001', 'vcap/tables/')
 
 #load all case record data from the civil extract into one dataframe
 all_tables <- importFiles('c', civil_data_dict, 'path/to/raw/vcap/files/')
-#> ...STARTING FILE IMPORT AT 22:51:30 
+#> ...STARTING FILE IMPORT AT 23:03:39 
 #> x  ERROR: DIRECTORY DOES NOT EXIST.
-
-#examine the data dicionary
-head(civil_data_dict)
-#> # A tibble: 6 × 10
-#>   table_type table_code table…¹ col_n…² type  null_…³ descr…⁴ start   end length
-#>   <chr>      <chr>      <chr>   <chr>   <chr> <chr>   <chr>   <int> <int>  <int>
-#> 1 case       NOBC       00      cntyno  <NA>  NOT NU… County…     1     3      3
-#> 2 case       NOBC       00      v2      <NA>  NOT NU… unknown     4     6      3
-#> 3 case       NOBC       00      rectype <NA>  NOT NU… Record…     7     8      2
-#> 4 case       NOBC       00      caseno  <NA>  NOT NU… Case F…     9    19     11
-#> 5 case       NOBC       00      f1      <NA>  NULL    Update…    20    24      5
-#> 6 case       NOBC       28      cnty_n… CHAR… NOT NU… This f…    25    27      3
-#> # … with abbreviated variable names ¹​table_id, ²​col_names, ³​null_option,
-#> #   ⁴​description
 
 #load all specifications per a specified data dictionary
 all_specs <- loadAllSpecs(civil_data_dict)
@@ -219,7 +236,7 @@ all_specs <- loadAllSpecs(civil_data_dict)
 #> ...SPEC FOR NOBS42 CREATED
 #> ...SPEC FOR NOBS10 CREATED
 #> ...ALL SPECS LOADED
-#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 2.326 seconds
+#> ...SPEC LOAD COMPLETE. ELAPSED TIME: 2.286 seconds
 
 #load relevant tables from civil data
 issue_type <- loadCivilTable('../../aoc/2022/sep/NOBC23', all_specs)

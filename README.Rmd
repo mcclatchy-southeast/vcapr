@@ -13,12 +13,27 @@ knitr::opts_chunk$set(
 )
 ```
 
-# vcapr
+```
+____    ____  ______     ___      .______   .______      
+\   \  /   / /      |   /   \     |   _  \  |   _  \     
+ \   \/   / |  ,----'  /  ^  \    |  |_)  | |  |_)  |    
+  \      /  |  |      /  /_\  \   |   ___/  |      /     
+   \    /   |  `----./  _____  \  |  |      |  |\  \----.
+    \__/     \______/__/     \__\ | _|      | _| `._____|
+                                                         
+```
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 An R package to efficiently import and parse data extracts from the N.C. Administrative Office of the Courts VCAP system for civil court data.
+
+Use vcapr to:
+* load in raw data from the AOC civil extract
+* parse the data line by line according to the data layout for each table
+* write parse tables to CSV files for easy loading
+
+In testing, the entire processing of loading, parsing and writing the tables took less than 30 minutes.
 
 ## Installation
 
@@ -34,6 +49,9 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 ```{r}
 # load the package
 library(vcapr)
+
+# examine the data dictionary
+head(civil_data_dict)
 
 # import, parse and write a single file to a destination directory
 #
@@ -82,7 +100,9 @@ Those tables fall into one of three categories:
 
 Each of these three record categories has a number of associated record types, identified by a two-digit number that corresponds with a layout described [in the provided data dictionary](https://www.documentcloud.org/documents/23070366-nc-aoc-vcap-extract-file-layout).
 
-This document, provided by the AOC, was manually translated into a CSV preloaded into the package.
+This document, provided by the AOC, was manually translated into a CSV preloaded into the package for ease of use.
+
+*NOTE: It's not advisable to load all the data into memory at once, so we've refactored vcapr to loop through a file or directory and reconstruct the tables line by line.*
 
 ### Preprocessing
 A small number of rows in the AOC data appear to contain embedded nulls, non-UTF characters that R seems to interpret as line breaks. These appear in text editors as `<0x00>` characters, and are discoverable via `grep`.
@@ -116,9 +136,6 @@ processCivilFile('/vcap/NOBC0001', 'vcap/tables/')
 
 #load all case record data from the civil extract into one dataframe
 all_tables <- importFiles('c', civil_data_dict, 'path/to/raw/vcap/files/')
-
-#examine the data dicionary
-head(civil_data_dict)
 
 #load all specifications per a specified data dictionary
 all_specs <- loadAllSpecs(civil_data_dict)
