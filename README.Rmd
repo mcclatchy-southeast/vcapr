@@ -29,6 +29,7 @@ ____    ____  ______     ___      .______   .______
 An R package to efficiently import and parse data extracts from the N.C. Administrative Office of the Courts VCAP system for civil court data.
 
 Use `vcapr` to:
+
 * load in raw data from the AOC civil extract (either case, abstract or support record types)
 * parse the data line by line according to the data layout for each table
 * write parse tables to CSV files for easy loading
