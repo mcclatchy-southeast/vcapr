@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-Tools to efficiently import and parse data extracts from the N.C. Administrative Office of the Courts VCAP system for civil court data.
+An R package to efficiently import and parse data extracts from the N.C. Administrative Office of the Courts VCAP system for civil court data.
 
 ## Installation
 
@@ -32,8 +32,80 @@ devtools::install_github("mcclatchy-southeast/vcapr")
 ## Usage
 
 ```{r}
-#load the package
+# load the package
 library(vcapr)
+
+# import, parse and write a single file to a destination directory
+# change this to wherever the raw files are stored on your machine
+# and where you want to the separated files to be saved
+process_results <- processCivilFile('/vcap/NOBC0001', '/vcap/tables/')
+
+# loop through a series of files
+# change this to wherever the raw files are stored on your machine
+# and where you want to the separated files to be saved
+# TODO Add a function like this to get a directory
+#
+# create a list of filenames
+files <- c('/vcap/NOBC0001',
+           '/vcap/NOBC0002',
+           '/vcap/NOBC0003'
+)
+# loop through the filenames, processing each and producing a results file
+for(file in files){
+  if(!exists('process_results')){
+    process_results <- processCivilFile(file, '~/Dropbox/projects/newsobserver/sfr_investors/data/aoc/2022/upload_test/')
+  }
+  else{
+    process_results <- rbind(
+      process_results,
+      processCivilFile(file, '~/Dropbox/projects/newsobserver/sfr_investors/data/aoc/2022/upload_test/')
+    )
+  }
+}
+```
+
+## Background
+Data from the N.C. Administrative Office of the Courts is provided via public records request in a 5-year "extract" every six months. The agency exports its database into a sequential series of fixed-width 2.1 GB files made up of data from several tables.
+
+Those tables fall into one of three categories:
+
+* Cases records
+* Abstract records
+* Support records
+
+Each of these three record categories has a number of associated record types, identified by a two-digit number that corresponds with a layout described [in the provided data dictionary](https://www.documentcloud.org/documents/23070366-nc-aoc-vcap-extract-file-layout).
+
+This document, provided by the AOC, was manually translated into a CSV preloaded into the package.
+
+### Preprocessing
+A small number of rows in the AOC data appear to contain embedded nulls, non-UTF characters that R seems to interpret as line breaks. These appear in text editors as `<0x00>` characters, and are discoverable via `grep`.
+
+```bash
+grep '\x0' NOBC0004raw
+```
+
+Because they're interpreted as line breaks, they incorrectly increase the number of rows and make the resulting broken lines impossible to parse automatically.
+
+To fix these embedded nulls, we can replace them with a space using a `perl` command in Terminal.
+
+```bash
+perl -pe 's/\0/ /g' < NOBC0017 > NOBC0017fix
+```
+
+The vcapr package attempts to catch other encoding issues and correct them during parsing.
+
+h/t to [Michael Toren](https://twitter.com/michael_toren) for the assist with this issue via the NICAR listserv.
+
+## Other/old functions
+
+In the process of moving away from these after refactoring. So consider everything below deprecated.
+
+```{r}
+# load the package
+library(vcapr)
+
+# import, parse and write a single file
+processCivilFile('/vcap/NOBC0001', 'vcap/tables/')
 
 #load all case record data from the civil extract into one dataframe
 all_tables <- importFiles('c', civil_data_dict, 'path/to/raw/vcap/files/')
